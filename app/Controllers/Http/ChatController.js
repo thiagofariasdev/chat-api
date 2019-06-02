@@ -8,17 +8,6 @@
   esourceful controller for interacting with chats
   
 class ChatController {
-  *
-   Show a list of all chats.
-   * GET chats
-  
-   * @param {object} ctx
-   * @param {Request} ctx.request
-   * @param {Response} ctx.response
-   * @param {View} ctx.view
-   */
-  async index ({ request, response, view }) {
-  }
 
   /**
    * Render a form to be used for creating a new chat.
