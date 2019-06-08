@@ -17,7 +17,12 @@
 const Route = use('Route')
 
 Route.get('/', () => {
-  return { greeting: 'Hello world in JSON' }
-})
+	return { greeting: 'Hello world in JSON' }
+});
 
-Route.resource('chat', 'ChatController');
+Route.group(() => {
+	Route.resource('chats', 'ChatController');
+	Route.post('login', 'UserController.login');
+	Route.post('register', 'UserController.register');
+}).prefix('api')
+
