@@ -45,12 +45,29 @@ class User extends Model {
 	/**
 	 * A relationship of Chats
 	 *
-	 * @method chats
+	 * @method fromChats
 	 *
-	 * @return {Object}
+	 * @returns {Object}
 	 */
-	chats() {
-		return this.hasMany('App/Models/Chat', 'id', 'user_id')
+	fromChats() {
+		return this.hasMany('App/Models/Chat', 'id', 'from_id')
+	}
+	/**
+	 * A relationship of Chats
+	 *
+	 * @method toChats
+	 *
+	 * @returns {Object}
+	 */
+	toChats() {
+		return this.hasMany('App/Models/Chat', 'id', 'to_id')
+	}
+
+	async chats() {
+		let fc = await this.fromChats().fetch()
+		let tc = await this.toChats().fetch()
+
+		return fc, tc;
 	}
 }
 

@@ -2,7 +2,7 @@
 // @ts-check
 /** @typedef {import('@adonisjs/framework/src/Request')} Request */
 /** @typedef {import('@adonisjs/framework/src/Response')} Response */
-/** @typedef {import('@adonisjs/auth/src/Schemes/Jwt')} Auth*/
+/** @typedef {import('@adonisjs/auth/src/Schemes/Session')} Auth*/
 
 /**
  * Resourceful controller for interacting with chats
@@ -20,9 +20,8 @@ class ChatController {
 	 * @param {Auth} ctx.auth
 	 */
 	async index({ request, response, auth }) {
-		let User = await auth.user;
-		return User;
-		// User.chats();
+		let user = await auth.getUser();
+		return await user.chats();
 	}
 
 	/**
@@ -32,8 +31,23 @@ class ChatController {
 	 * @param {object} ctx
 	 * @param {Request} ctx.request
 	 * @param {Response} ctx.response
+	 * @param {Auth} ctx.auth
 	 */
-	async store({ request, response }) {
+	async store({ request, response, auth }) {
+		let user = await auth.getUser()
+		let exists = await Chat.query().where('from_id', user.id).orWhere('to_id', user.id).first()
+		if (!exists) {
+			let col = request.collect([
+				'to_id',
+				'last_message_time',
+				'last_message'
+			]);
+			col[0].from_id = user.id
+			let chat = await Chat.createMany(col);
+			response.json({ success: true, data: chat, hole: 'created' });
+		} else {
+			response.json({ success: true, data: exists, hole: 'exists' });
+		}
 	}
 
 	/**
