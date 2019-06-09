@@ -35,16 +35,19 @@ class ChatController {
 	 */
 	async store({ request, response, auth }) {
 		let user = await auth.getUser()
-		let exists = await Chat.query().where('from_id', user.id).orWhere('to_id', user.id).first()
+		let col = request.collect([
+			'to_id',
+			'last_message_time',
+			'last_message'
+		]);
+		let exists = await Chat.query()
+			.where({ from_id: user.id, to_id: col[0].to_id })
+			.orWhere({ to_id: user.id, from_id: col[0].to_id }).first()
 		if (!exists) {
-			let col = request.collect([
-				'to_id',
-				'last_message_time',
-				'last_message'
-			]);
+
 			col[0].from_id = user.id
 			let chat = await Chat.createMany(col);
-			response.json({ success: true, data: chat, hole: 'created' });
+			response.json({ success: true, data: chat[0], hole: 'created' });
 		} else {
 			response.json({ success: true, data: exists, hole: 'exists' });
 		}
