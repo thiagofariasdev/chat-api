@@ -3,6 +3,7 @@
 /**@typedef {import('@adonisjs/framework/src/Request')} Request */
 /**@type {import('')} */
 const User = use('App/Models/User')
+const Chat = use('App/Models/Chat')
 
 class UserController {
 	/**

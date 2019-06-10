@@ -21,7 +21,7 @@ Route.get('/', () => {
 });
 
 Route.group(() => {
-	Route.resource('chats', 'ChatController');
+	Route.resource('chats', 'ChatController').apiOnly();
 	Route.post('login', 'UserController.login');
 	Route.post('register', 'UserController.register');
 }).prefix('api')

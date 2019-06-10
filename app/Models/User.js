@@ -13,7 +13,6 @@ class User extends Model {
 	static get table() {
 		return 'users'
 	}
-
 	static boot() {
 		super.boot()
 
@@ -50,7 +49,7 @@ class User extends Model {
 	 * @returns {Object}
 	 */
 	fromChats() {
-		return this.hasMany('App/Models/Chat', 'id', 'from_id')
+		return this.hasMany('App/Models/Chat', 'id', 'from_id');
 	}
 	/**
 	 * A relationship of Chats
@@ -60,14 +59,18 @@ class User extends Model {
 	 * @returns {Object}
 	 */
 	toChats() {
-		return this.hasMany('App/Models/Chat', 'id', 'to_id')
+		return this.hasMany('App/Models/Chat', 'id', 'to_id');
 	}
 
 	async chats() {
-		let fc = await this.fromChats().fetch()
-		let tc = await this.toChats().fetch()
+		let fc = await this.fromChats().fetch();
+		let tc = await this.toChats().fetch();
 
 		return fc, tc;
+	}
+	static async exists(id) {
+		let user = await User.find(id);
+		return user != undefined;
 	}
 }
 

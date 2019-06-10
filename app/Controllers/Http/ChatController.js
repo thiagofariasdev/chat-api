@@ -8,6 +8,7 @@
  * Resourceful controller for interacting with chats
  */
 const Chat = use('App/Models/Chat');
+const User = use('App/Models/User');
 
 class ChatController {
 	/**
@@ -35,19 +36,16 @@ class ChatController {
 	 */
 	async store({ request, response, auth }) {
 		let user = await auth.getUser()
-		let col = request.collect([
+		let { to_id, last_message_time, last_message } = request.only([
 			'to_id',
 			'last_message_time',
 			'last_message'
 		]);
-		let exists = await Chat.query()
-			.where({ from_id: user.id, to_id: col[0].to_id })
-			.orWhere({ to_id: user.id, from_id: col[0].to_id }).first()
+		if (!User.exists(to_id)) { return { success: false, msg: 'User not found' } }
+		let exists = await Chat.findChat(to_id, user.id);
 		if (!exists) {
-
-			col[0].from_id = user.id
-			let chat = await Chat.createMany(col);
-			response.json({ success: true, data: chat[0], hole: 'created' });
+			let chat = await Chat.newChat({ from_id: user.id, to_id, last_message_time, last_message });
+			response.json({ success: true, data: chat, hole: 'created' });
 		} else {
 			response.json({ success: true, data: exists, hole: 'exists' });
 		}
