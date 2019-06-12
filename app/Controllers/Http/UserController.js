@@ -1,9 +1,8 @@
 'use strict'
 /**@typedef {import('@adonisjs/auth/src/Schemes/Jwt')} AuthToken*/
 /**@typedef {import('@adonisjs/framework/src/Request')} Request */
-/**@type {import('')} */
+
 const User = use('App/Models/User')
-const Chat = use('App/Models/Chat')
 
 class UserController {
 	/**
@@ -29,16 +28,8 @@ class UserController {
 	 */
 	async register({ request, auth }) {
 		let { email, password, name, active } = request.only(['email', 'password', 'name', 'active']);
-
-		let user = new User();
-		user.name = name;
-		user.email = email;
-		user.password = password;
-		user.active = active;
-		user.save();
-
+		User.createUser({ email, password, name, active });
 		let { token } = await auth.attempt(email, password);
-
 		return { token };
 	}
 }

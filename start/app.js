@@ -11,12 +11,13 @@
 |
 */
 const providers = [
-  '@adonisjs/framework/providers/AppProvider',
-  '@adonisjs/auth/providers/AuthProvider',
-  '@adonisjs/bodyparser/providers/BodyParserProvider',
-  '@adonisjs/cors/providers/CorsProvider',
-  '@adonisjs/lucid/providers/LucidProvider',
-  '@adonisjs/websocket/providers/WsProvider'
+	'@adonisjs/framework/providers/AppProvider',
+	'@adonisjs/auth/providers/AuthProvider',
+	'@adonisjs/bodyparser/providers/BodyParserProvider',
+	'@adonisjs/cors/providers/CorsProvider',
+	'@adonisjs/lucid/providers/LucidProvider',
+	'@adonisjs/websocket/providers/WsProvider',
+	'@adonisjs/ally/providers/AllyProvider'
 ]
 
 /*
@@ -29,7 +30,7 @@ const providers = [
 |
 */
 const aceProviders = [
-  '@adonisjs/lucid/providers/MigrationsProvider'
+	'@adonisjs/lucid/providers/MigrationsProvider'
 ]
 
 /*

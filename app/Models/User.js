@@ -72,6 +72,14 @@ class User extends Model {
 		let user = await User.find(id);
 		return user != undefined;
 	}
+	static async createUser(data) {
+		let user = new User();
+		for (let e of Object.entries(data)) {
+			user[e[0]] = e[1]
+		}
+		let save = await user.save()
+		return save;
+	}
 }
 
 module.exports = User
